@@ -1,0 +1,24 @@
+<install>
+    <name>ofxGeoJSON</name>
+    <version>0.0.1</version>
+    <author>Moxus</author>
+    <url>http://moxus.org</url>
+    
+    <add>	
+        <!-- ===================================================================== -->
+        <!-- ========================== add per project using this addon ========= -->
+        <!-- ===================================================================== -->
+        
+        <src>
+            <folder name="addons/ofxGeoJSON/src">
+                <file>../../../addons/ofxGeoJSON/src/ofxGeoJSON.h</file>
+                <file>../../../addons/ofxGeoJSON/src/ofxGeoJSON.cpp</file>
+            </folder>
+        </src>
+        
+        <include>
+            <path>../../../addons/ofxGeoJSON/src</path>
+        </include>
+    </add>
+
+</install>
