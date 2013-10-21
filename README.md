@@ -15,6 +15,9 @@ ofxGeoJSON is an addon for openframeworks to load and draw GeoJSON format files.
 ###Feature
 - Converting Geo Coordinate to Cartesian Coodinate (Mercator / Equirectangular Projection)
 
+###Dependency
+ofxJSON : [https://github.com/jefftimesten/ofxJSON](https://github.com/jefftimesten/ofxJSON)
+
 ###Not implemented yet
 - Making mesh as polygon
 - Safe JSON parsing
