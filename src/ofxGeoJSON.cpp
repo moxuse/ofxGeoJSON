@@ -43,6 +43,10 @@ bool ofxGeoJSON::load(string _path) {
                         case OFX_GEO_JSON_MERCATROE:
                             pos = mercator(coord);
                             break;
+                        case OFX_GEO_JSON_STEREOGRAPHIC:
+                        case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
+                            pos = azimuthal(coord);
+                            break;
                         default:
                             break;
                     }
@@ -66,6 +70,10 @@ bool ofxGeoJSON::load(string _path) {
                                 break;
                             case OFX_GEO_JSON_MERCATROE:
                                 pos = mercator(coord);
+                                break;
+                            case OFX_GEO_JSON_STEREOGRAPHIC:
+                            case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
+                                pos = azimuthal(coord);
                                 break;
                             default:
                                 break;
@@ -104,6 +112,34 @@ ofPoint ofxGeoJSON::equirectangular(Coodinate _coordinate) {
     position.y = _coordinate.latitude / 360  * scale - translateY;
     return position;
 };
+
+ofPoint ofxGeoJSON::azimuthal(Coodinate _coordinate) {
+    ofPoint position;
+    float cy0 = cos(pvRadians(0));
+    float sy0 = sin(pvRadians(0));
+    float radian = PI / 180.0;
+    float x1 = _coordinate.longtitude * radian - pvRadians(0);
+    float y1 = _coordinate.latitude * radian;
+    float cx1 = cos(x1);
+    float sx1 = sin(x1);
+    float cy1 = cos(y1);
+    float sy1 = sin(y1);
+    float cc = sy0 * sy1 + cy0 * cy1 * cx1;
+    float k;
+    switch(mode) {
+        case OFX_GEO_JSON_STEREOGRAPHIC:
+            k = 1 / (1 + cc);
+            break;
+        case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
+            k = sqrt(2 / (1 + cc));
+            break;
+        default:
+            break;
+    }
+    position.x = k * cy1 * sx1 * scale + translateX;
+    position.y = -1 * k * (sy0 * cy1 * cx1 - cy0 * sy1) * scale + translateY;
+    return position;
+}
 
 float ofxGeoJSON::pvRadians(float _degrees) {
     float radians = PI / 180.0;

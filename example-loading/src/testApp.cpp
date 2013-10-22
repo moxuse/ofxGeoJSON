@@ -26,7 +26,7 @@ void testApp::setup(){
     if (geojson.load("countries.geo.json")) {
         ofLog(OF_LOG_NOTICE, "Succeed to load geojson..");
     } else {
-        ofLog(OF_LOG_NOTICE, "Fale to load geojson..");
+        ofLog(OF_LOG_NOTICE, "Failed to load geojson..");
     };
 
     //set the camera
