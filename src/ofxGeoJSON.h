@@ -29,6 +29,7 @@ class ofxGeoJSON {
 public:
     ofxGeoJSON();
     bool load(string _path);
+    ofPoint convertToProject(Coodinate _coordinate);
     ofPoint mercator(Coodinate _coordinate);
     ofPoint equirectangular(Coodinate _coordinate);
     ofPoint azimuthal(Coodinate _coordinate);
@@ -37,7 +38,7 @@ public:
     void setTranslate(float _transelateX, float _transelateY);
     void draw();
     ofMesh* getMesh();
-    
+  
 private:
     ofx_geo_json_mode mode;
     float scale;

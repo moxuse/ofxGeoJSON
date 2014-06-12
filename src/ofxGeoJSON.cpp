@@ -35,21 +35,7 @@ bool ofxGeoJSON::load(string _path) {
                     Coodinate coord;
                     coord.latitude = coordinates[0][j][1].asFloat();
                     coord.longtitude = coordinates[0][j][0].asFloat();
-                    ofPoint pos;
-                    switch (mode) {
-                        case OFX_GEO_JSON_EQUIRECTANGULAR:
-                            pos = equirectangular(coord);
-                            break;
-                        case OFX_GEO_JSON_MERCATROE:
-                            pos = mercator(coord);
-                            break;
-                        case OFX_GEO_JSON_STEREOGRAPHIC:
-                        case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
-                            pos = azimuthal(coord);
-                            break;
-                        default:
-                            break;
-                    }
+                    ofPoint pos = convertToProject(coord);
                     newMesh.addVertex(ofVec3f(pos.x, pos.y, 0));
                     newMesh.addColor(ofFloatColor(0.0, 0.0, 0.0));
                     newMesh.addIndex(j);
@@ -63,21 +49,7 @@ bool ofxGeoJSON::load(string _path) {
                         Coodinate coord;
                         coord.latitude = coordinates[j][0][k][1].asFloat();
                         coord.longtitude = coordinates[j][0][k][0].asFloat();
-                        ofPoint pos;
-                        switch (mode) {
-                            case OFX_GEO_JSON_EQUIRECTANGULAR:
-                                pos = equirectangular(coord);
-                                break;
-                            case OFX_GEO_JSON_MERCATROE:
-                                pos = mercator(coord);
-                                break;
-                            case OFX_GEO_JSON_STEREOGRAPHIC:
-                            case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
-                                pos = azimuthal(coord);
-                                break;
-                            default:
-                                break;
-                        }
+                        ofPoint pos = convertToProject(coord);
                         newMesh.addVertex(ofVec3f(pos.x, pos.y, 0));
                         newMesh.addColor(ofFloatColor(0.0, 0.0, 0.0));
                         newMesh.addIndex(k);
@@ -97,6 +69,24 @@ bool ofxGeoJSON::load(string _path) {
 void ofxGeoJSON::setMode(ofx_geo_json_mode _mode) {
     mode = _mode;
 };
+
+ofPoint ofxGeoJSON::convertToProject (Coodinate _coordinate) {
+  ofPoint pos;
+  switch (mode) {
+    case OFX_GEO_JSON_EQUIRECTANGULAR:
+      pos = equirectangular(_coordinate);
+      break;
+    case OFX_GEO_JSON_MERCATROE:
+      pos = mercator(_coordinate);
+      break;
+    case OFX_GEO_JSON_STEREOGRAPHIC:
+    case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
+      pos = azimuthal(_coordinate);
+    default:
+      break;
+  }
+  return pos;
+}
 
 ofPoint ofxGeoJSON::mercator(Coodinate _coordinate) {
     ofPoint psition;
