@@ -21,7 +21,6 @@ ofxJSON : [https://github.com/jefftimesten/ofxJSON](https://github.com/jefftimes
 ###Not implemented yet
 - Making mesh as polygon
 - Safe JSON parsing
-- Drawing indivisual features with 'name' property or indexes.
 - Now aceptable geometry types are 'polygon' and 'MultiPolygon' only.
 - Multi-platform
 
