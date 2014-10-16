@@ -48,11 +48,28 @@ void testApp::draw(){
     ofBackground(255, 255, 255);
     cam.begin();
     
-    ///-------------------------
+    
+    //-------------------------
     // draw mashes
     //-------------------------
     
     geojson.draw();
+    
+    
+    
+    //-------------------------
+    // get meshes of feature
+    //-------------------------
+    
+    vector< ofPtr<ofMesh> > japan = geojson.getFeature("Japan");
+    
+    for (int i = 0; i<japan.size(); i++) {
+        int size = japan[i].get()->getNumColors();
+        for (int j = 0; j < size; j++) {
+            japan[i].get()->setColor(j, ofColor(255.0,0.0,0.0));
+        }
+        japan[i].get()->draw(OF_MESH_FILL);
+    };
     
     cam.end();
 }
