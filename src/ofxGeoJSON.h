@@ -50,7 +50,6 @@ public:
     void setTranslate(float _transelateX, float _transelateY);
     void draw();
     vector< ofPtr<ofMesh> > getFeature(string name);
-    //ofxGeoJSONFeature* getMesh();
   
 private:
     ofx_geo_json_mode mode;

@@ -169,9 +169,3 @@ vector< ofPtr<ofMesh> > ofxGeoJSON::getFeature(string name) {
     return (it->second).meshes;
 }
 
-//ofMesh* ofxGeoJSON::getMesh() {
-//    return &meshes[0];
-//};
-
-
-
