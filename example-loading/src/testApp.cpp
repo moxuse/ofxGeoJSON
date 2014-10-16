@@ -68,7 +68,6 @@ void testApp::draw(){
         for (int j = 0; j < size; j++) {
             japan[i].get()->setColor(j, ofColor(255.0,0.0,0.0));
         }
-        japan[i].get()->draw(OF_MESH_FILL);
     };
     
     cam.end();
