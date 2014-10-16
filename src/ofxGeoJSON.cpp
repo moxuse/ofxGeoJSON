@@ -28,35 +28,41 @@ bool ofxGeoJSON::load(string _path) {
             ofxJSONElement coordinates = result["features"][i]["geometry"]["coordinates"];
             ofLog(OF_LOG_NOTICE) << "index:" << i << result["features"][i]["properties"]["name"];
             
+            ofxGeoJSONFeature newFeatures;
+            newFeatures = ofxGeoJSONFeature();
+            newFeatures.name = name;
+            
             if ("Polygon" == type.asString()) {
-                ofMesh newMesh = ofMesh();
-                newMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+                ofPtr<ofMesh> newMesh = ofPtr<ofMesh>(new ofMesh());
+                newMesh->setMode(OF_PRIMITIVE_LINE_STRIP);
                 for (int j = 0; j<coordinates[0].size(); j++) {
                     Coodinate coord;
                     coord.latitude = coordinates[0][j][1].asFloat();
                     coord.longtitude = coordinates[0][j][0].asFloat();
                     ofPoint pos = convertToProject(coord);
-                    newMesh.addVertex(ofVec3f(pos.x, pos.y, 0));
-                    newMesh.addColor(ofFloatColor(0.0, 0.0, 0.0));
-                    newMesh.addIndex(j);
+                    newMesh->addVertex(ofVec3f(pos.x, pos.y, 0));
+                    newMesh->addColor(ofFloatColor(0.0, 0.0, 0.0));
+                    newMesh->addIndex(j);
                 }
-                meshes.push_back(newMesh);
+                newFeatures.meshes.push_back(newMesh);
             } else if ("MultiPolygon" == type.asString()) {
                 for (int j = 0; j<coordinates.size(); j++) {
-                    ofMesh newMesh = ofMesh();
-                    newMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+                    ofPtr<ofMesh> newMesh = ofPtr<ofMesh>(new ofMesh());
+                    newMesh->setMode(OF_PRIMITIVE_LINE_STRIP);
                     for (int k = 0; k<coordinates[j][0].size(); k++) {
                         Coodinate coord;
                         coord.latitude = coordinates[j][0][k][1].asFloat();
                         coord.longtitude = coordinates[j][0][k][0].asFloat();
                         ofPoint pos = convertToProject(coord);
-                        newMesh.addVertex(ofVec3f(pos.x, pos.y, 0));
-                        newMesh.addColor(ofFloatColor(0.0, 0.0, 0.0));
-                        newMesh.addIndex(k);
+                        newMesh->addVertex(ofVec3f(pos.x, pos.y, 0));
+                        newMesh->addColor(ofFloatColor(0.0, 0.0, 0.0));
+                        newMesh->addIndex(k);
                     }
-                    meshes.push_back(newMesh);
+                    newFeatures.meshes.push_back(newMesh);
                 }
             }
+            
+            features.insert(map<string, ofxGeoJSONFeature>::value_type(name, newFeatures));
         }
         return true;
     } else {
@@ -146,12 +152,26 @@ void ofxGeoJSON::setTranslate(float _transelateX, float _transelateY) {
 };
 
 void ofxGeoJSON::draw() {
-    for (int i = 0; i < meshes.size(); i++) {
-        meshes[i].draw(OF_MESH_FILL);
+    map<string, ofxGeoJSONFeature>::iterator it = features.begin();
+    while( it != features.end() ) {
+        vector< ofPtr<ofMesh> > targets = (it->second).meshes;
+        for (int i = 0; i < targets.size(); i++) {
+            targets[i]->draw(OF_MESH_FILL);
+        }
+        ++it;
     }
 };
 
-ofMesh* ofxGeoJSON::getMesh() {
-    return &meshes[0];
-};
+vector< ofPtr<ofMesh> > ofxGeoJSON::getFeature(string name) {
+    vector< ofPtr<ofMesh> > meshes;
+    map<string, ofxGeoJSONFeature>::iterator it;
+    it = features.find(name);
+    return (it->second).meshes;
+}
+
+//ofMesh* ofxGeoJSON::getMesh() {
+//    return &meshes[0];
+//};
+
+
 

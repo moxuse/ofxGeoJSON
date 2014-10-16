@@ -25,9 +25,21 @@ enum ofx_geo_json_mode {
     OFX_GEO_JSON_STEREOGRAPHIC = 3
 };
 
+class ofxGeoJSONFeature : public ofNode {
+public:
+    vector< ofPtr<ofMesh> > meshes;
+    string name;
+};
+
 class ofxGeoJSON {
 public:
     ofxGeoJSON();
+    ~ofxGeoJSON() {
+        map<string, ofxGeoJSONFeature>::iterator it = features.begin();
+        while( it != features.end() ) {
+            features.erase (it++);
+        }
+    };
     bool load(string _path);
     ofPoint convertToProject(Coodinate _coordinate);
     ofPoint mercator(Coodinate _coordinate);
@@ -37,7 +49,8 @@ public:
     void setScale(float scale);
     void setTranslate(float _transelateX, float _transelateY);
     void draw();
-    ofMesh* getMesh();
+    vector< ofPtr<ofMesh> > getFeature(string name);
+    //ofxGeoJSONFeature* getMesh();
   
 private:
     ofx_geo_json_mode mode;
@@ -45,7 +58,7 @@ private:
     float translateX;
     float translateY;
     float pvRadians(float degrees);
-    vector<ofMesh> meshes;
+    map<string, ofxGeoJSONFeature> features;
     ofxJSONElement result;
 };
 
