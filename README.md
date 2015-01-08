@@ -13,7 +13,9 @@ ofxGeoJSON is an addon for openFrameworks to load and draw GeoJSON format files.
 - OSX 10.9.5 + XCode 6.0 + o/F 0.8.4
 
 ###Feature
-- Converting Geo Coordinate to Cartesian Coodinate (Mercator / Equirectangular Projection)
+- Converting Geo Coordinate to Cartesian Coodinate (Mercator / Equirectangular / Azimuthal Equarlarea / Streographic / Spherical Projection)
+
+![spherical animation gif](./spherical-480p-f.gif)
 
 ###Dependency
 ofxJSON : [https://github.com/jefftimesten/ofxJSON](https://github.com/jefftimesten/ofxJSON)
