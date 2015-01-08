@@ -46,6 +46,7 @@ public:
     ofPoint mercator(Coodinate _coordinate);
     ofPoint equirectangular(Coodinate _coordinate);
     ofPoint azimuthal(Coodinate _coordinate);
+    ofPoint spherical(Coodinate _coordinate);
     void setMode(ofx_geo_json_mode _mode);
     void setScale(float scale);
     void setTranslate(float _transelateX, float _transelateY);
@@ -53,6 +54,7 @@ public:
     vector< ofPtr<ofMesh> > getFeature(string name);
   
 private:
+    const float E_R = 6378.137; // Earth radius
     ofx_geo_json_mode mode;
     float scale;
     float translateX;

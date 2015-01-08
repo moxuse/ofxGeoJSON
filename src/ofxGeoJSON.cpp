@@ -40,7 +40,7 @@ bool ofxGeoJSON::load(string _path) {
                     coord.latitude = coordinates[0][j][1].asFloat();
                     coord.longtitude = coordinates[0][j][0].asFloat();
                     ofPoint pos = convertToProject(coord);
-                    newMesh->addVertex(ofVec3f(pos.x, pos.y, 0));
+                    newMesh->addVertex(ofVec3f(pos.x, pos.y, pos.z));
                     newMesh->addColor(ofFloatColor(0.0, 0.0, 0.0));
                     newMesh->addIndex(j);
                 }
@@ -54,7 +54,7 @@ bool ofxGeoJSON::load(string _path) {
                         coord.latitude = coordinates[j][0][k][1].asFloat();
                         coord.longtitude = coordinates[j][0][k][0].asFloat();
                         ofPoint pos = convertToProject(coord);
-                        newMesh->addVertex(ofVec3f(pos.x, pos.y, 0));
+                        newMesh->addVertex(ofVec3f(pos.x, pos.y, pos.z));
                         newMesh->addColor(ofFloatColor(0.0, 0.0, 0.0));
                         newMesh->addIndex(k);
                     }
@@ -88,6 +88,10 @@ ofPoint ofxGeoJSON::convertToProject (Coodinate _coordinate) {
     case OFX_GEO_JSON_STEREOGRAPHIC:
     case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
       pos = azimuthal(_coordinate);
+      break;
+    case OFX_GEO_JSON_SPHERICAL:
+      pos = spherical(_coordinate);
+      break;
     default:
       break;
   }
@@ -134,6 +138,16 @@ ofPoint ofxGeoJSON::azimuthal(Coodinate _coordinate) {
     }
     position.x = k * cy1 * sx1 * scale + translateX;
     position.y = -1 * k * (sy0 * cy1 * cx1 - cy0 * sy1) * scale + translateY;
+    return position;
+}
+
+ofPoint ofxGeoJSON::spherical(Coodinate _coordinate) {
+    ofPoint position;
+    float lat = pvRadians(_coordinate.latitude);
+    float lon = pvRadians(_coordinate.longtitude);
+    position.x = E_R * cosf(lat) * cosf(lon) * scale;
+    position.y = E_R * cosf(lat) * sinf(lon) * scale;
+    position.z = E_R * sinf(lat) * scale;
     return position;
 }
 
