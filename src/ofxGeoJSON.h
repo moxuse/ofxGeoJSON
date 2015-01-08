@@ -22,7 +22,8 @@ enum ofx_geo_json_mode {
     OFX_GEO_JSON_MERCATROE = 0,
     OFX_GEO_JSON_EQUIRECTANGULAR = 1,
     OFX_GEO_JSON_AZIMUTHAL_EQUALAREA = 2,
-    OFX_GEO_JSON_STEREOGRAPHIC = 3
+    OFX_GEO_JSON_STEREOGRAPHIC = 3,
+    OFX_GEO_JSON_SPHERICAL = 4
 };
 
 class ofxGeoJSONFeature : public ofNode {
