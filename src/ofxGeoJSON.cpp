@@ -26,7 +26,7 @@ bool ofxGeoJSON::load(string _path) {
             ofxJSONElement type = result["features"][i]["geometry"]["type"];
             string name = result["features"][i]["properties"]["name"].asString();
             ofxJSONElement coordinates = result["features"][i]["geometry"]["coordinates"];
-            ofLog(OF_LOG_NOTICE) << "index:" << i << result["features"][i]["properties"]["name"];
+            ofLog(OF_LOG_NOTICE) << "index: " << i << " " << result["features"][i]["properties"]["name"];
             
             ofxGeoJSONFeature newFeatures;
             newFeatures = ofxGeoJSONFeature();
@@ -77,33 +77,33 @@ void ofxGeoJSON::setMode(ofx_geo_json_mode _mode) {
 };
 
 ofPoint ofxGeoJSON::convertToProject (Coodinate _coordinate) {
-  ofPoint pos;
+  ofPoint position;
   switch (mode) {
     case OFX_GEO_JSON_EQUIRECTANGULAR:
-      pos = equirectangular(_coordinate);
+      position = equirectangular(_coordinate);
       break;
     case OFX_GEO_JSON_MERCATROE:
-      pos = mercator(_coordinate);
+      position = mercator(_coordinate);
       break;
     case OFX_GEO_JSON_STEREOGRAPHIC:
     case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
-      pos = azimuthal(_coordinate);
+      position = azimuthal(_coordinate);
       break;
     case OFX_GEO_JSON_SPHERICAL:
-      pos = spherical(_coordinate);
+      position = spherical(_coordinate);
       break;
     default:
       break;
   }
-  return pos;
+  return position;
 }
 
 ofPoint ofxGeoJSON::mercator(Coodinate _coordinate) {
-    ofPoint psition;
-    psition.x = (_coordinate.longtitude / 180.0) * scale + translateX;
-    psition.y = /*_coordinate.latitude > 85 ? 1 : _coordinate.latitude < -85 ? -1 //<- we should consider about polar regions converting..
+    ofPoint position;
+    position.x = (_coordinate.longtitude / 180.0) * scale + translateX;
+    position.y = /*_coordinate.latitude > 85 ? 1 : _coordinate.latitude < -85 ? -1 //<- we should consider about polar regions converting..
     : */ ( log(tan(PI / 4.0 + pvRadians(_coordinate.latitude) / 2.0)) / PI ) * scale - translateY;
-    return psition;
+    return position;
 };
 
 ofPoint ofxGeoJSON::equirectangular(Coodinate _coordinate) {
