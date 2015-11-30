@@ -7,7 +7,7 @@ ofxGeoJSON is an addon for openFrameworks to load and draw GeoJSON format files.
 
 ###GeoJSON
 
-[The GeoJSON Format Specification](http://geojson.org.1geojson-spec.html)
+[The GeoJSON Format Specification](http://geojson.org/geojson-spec.html)
 
 ###Test environment
 - OSX 10.11 + XCode 7.1.1 + o/F 0.9.0
