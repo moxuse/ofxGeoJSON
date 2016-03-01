@@ -36,7 +36,7 @@ bool ofxGeoJSON::load(string _path) {
                 ofPtr<ofMesh> newMesh = ofPtr<ofMesh>(new ofMesh());
                 newMesh->setMode(OF_PRIMITIVE_LINE_STRIP);
                 for (int j = 0; j<coordinates[0].size(); j++) {
-                    Coodinate coord;
+                    Coordinate coord;
                     coord.latitude = coordinates[0][j][1].asFloat();
                     coord.longtitude = coordinates[0][j][0].asFloat();
                     ofPoint pos = convertToProject(coord);
@@ -50,7 +50,7 @@ bool ofxGeoJSON::load(string _path) {
                     ofPtr<ofMesh> newMesh = ofPtr<ofMesh>(new ofMesh());
                     newMesh->setMode(OF_PRIMITIVE_LINE_STRIP);
                     for (int k = 0; k<coordinates[j][0].size(); k++) {
-                        Coodinate coord;
+                        Coordinate coord;
                         coord.latitude = coordinates[j][0][k][1].asFloat();
                         coord.longtitude = coordinates[j][0][k][0].asFloat();
                         ofPoint pos = convertToProject(coord);
@@ -76,49 +76,49 @@ void ofxGeoJSON::setMode(ofx_geo_json_mode _mode) {
     mode = _mode;
 };
 
-ofPoint ofxGeoJSON::convertToProject (Coodinate _coordinate) {
+ofPoint ofxGeoJSON::convertToProject (Coordinate _coordinate) {
   ofPoint position;
   switch (mode) {
     case OFX_GEO_JSON_EQUIRECTANGULAR:
-      position = equirectangular(_coordinate);
-      break;
+          position = this->equirectangular(_coordinate);
+          break;
     case OFX_GEO_JSON_MERCATROE:
-      position = mercator(_coordinate);
-      break;
+          position = this->mercator(_coordinate);
+          break;
     case OFX_GEO_JSON_STEREOGRAPHIC:
     case OFX_GEO_JSON_AZIMUTHAL_EQUALAREA:
-      position = azimuthal(_coordinate);
-      break;
+          position = this->azimuthal(_coordinate);
+          break;
     case OFX_GEO_JSON_SPHERICAL:
-      position = spherical(_coordinate);
-      break;
+          position = this->spherical(_coordinate);
+          break;
     default:
       break;
   }
   return position;
 }
 
-ofPoint ofxGeoJSON::mercator(Coodinate _coordinate) {
+ofPoint ofxGeoJSON::mercator(Coordinate _coordinate) {
     ofPoint position;
     position.x = (_coordinate.longtitude / 180.0) * scale + translateX;
     position.y = /*_coordinate.latitude > 85 ? 1 : _coordinate.latitude < -85 ? -1 //<- we should consider about polar regions converting..
-    : */ ( log(tan(PI / 4.0 + pvRadians(_coordinate.latitude) / 2.0)) / PI ) * scale - translateY;
+    : */ ( log(tan(PI / 4.0 + this->pvRadians(_coordinate.latitude) / 2.0)) / PI ) * scale - translateY;
     return position;
 };
 
-ofPoint ofxGeoJSON::equirectangular(Coodinate _coordinate) {
+ofPoint ofxGeoJSON::equirectangular(Coordinate _coordinate) {
     ofPoint position;
     position.x = _coordinate.longtitude / 360 * scale + translateX;
     position.y = _coordinate.latitude / 360  * scale - translateY;
     return position;
 };
 
-ofPoint ofxGeoJSON::azimuthal(Coodinate _coordinate) {
+ofPoint ofxGeoJSON::azimuthal(Coordinate _coordinate) {
     ofPoint position;
-    float cy0 = cos(pvRadians(0));
-    float sy0 = sin(pvRadians(0));
+    float cy0 = cos(this->pvRadians(0));
+    float sy0 = sin(this->pvRadians(0));
     float radian = PI / 180.0;
-    float x1 = _coordinate.longtitude * radian - pvRadians(0);
+    float x1 = _coordinate.longtitude * radian - this->pvRadians(0);
     float y1 = _coordinate.latitude * radian;
     float cx1 = cos(x1);
     float sx1 = sin(x1);
@@ -141,10 +141,10 @@ ofPoint ofxGeoJSON::azimuthal(Coodinate _coordinate) {
     return position;
 }
 
-ofPoint ofxGeoJSON::spherical(Coodinate _coordinate) {
+ofPoint ofxGeoJSON::spherical(Coordinate _coordinate) {
     ofPoint position;
-    float lat = pvRadians(_coordinate.latitude);
-    float lon = pvRadians(_coordinate.longtitude);
+    float lat = this->pvRadians(_coordinate.latitude);
+    float lon = this->pvRadians(_coordinate.longtitude);
     position.x = E_R * cosf(lat) * cosf(lon) * scale;
     position.y = E_R * cosf(lat) * sinf(lon) * scale;
     position.z = E_R * sinf(lat) * scale;
