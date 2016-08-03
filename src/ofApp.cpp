@@ -22,7 +22,7 @@ void ofApp::setup(){
     // If it's loaded ofxGeoJSON makes ofMesh's vector array in this transcation.
     //-------------------------
     
-    if (geojson.load("test.geo.json")) {
+    if (geojson.load("oversigtskort.geo.json")) {
         ofLog(OF_LOG_NOTICE, "Succeed to load geojson..");
     } else {
         ofLog(OF_LOG_NOTICE, "Failed to load geojson..");
@@ -33,8 +33,10 @@ void ofApp::setup(){
     cam.setNearClip(0.01);
     cam.setFarClip(100000);
     cam.setFov(45);
-    cam.setDistance(500);
+    cam.setDistance(distance);
     
+    
+
 }
 
 //--------------------------------------------------------------
@@ -46,37 +48,52 @@ void ofApp::update(){
 void ofApp::draw(){
     ofBackground(255, 255, 255);
     cam.begin();
-    
+
     
     //-------------------------
     // draw mashes
     //-------------------------
-    
+    ofPushMatrix();
+    ofTranslate(xOffset,yOffset);
     geojson.draw();
-    
+    ofPopMatrix();
     
     
     //-------------------------
     // get meshes of feature
     //-------------------------
     
-
     
-    vector< ofPtr<ofMesh> > japan = geojson.getFeature("WOOOHOO2");
-    
-    for (int i = 0; i<japan.size(); i++) {
-        int size = japan[i].get()->getNumColors();
-        for (int j = 0; j < size; j++) {
-            japan[i].get()->setColor(j, ofColor(255.0,0.0,0.0));
-        }
-    };
+//    vector< ofPtr<ofMesh> > japan = geojson.getFeature("WOOOHOO2");
+//    
+//    for (int i = 0; i<japan.size(); i++) {
+//        int size = japan[i].get()->getNumColors();
+//        for (int j = 0; j < size; j++) {
+//            japan[i].get()->setColor(j, ofColor(255.0,0.0,0.0));
+//        }
+//    };
     
     cam.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if(key == OF_KEY_UP){
+        yOffset+=0.01;
+    }
+    if(key == OF_KEY_DOWN){
+        yOffset-=0.01;
+    }
+    if(key == OF_KEY_RIGHT){
+         xOffset-=0.01;
+    }
+    if(key == OF_KEY_LEFT){
+        xOffset+=0.01;
+    }
+    
+    if(key == ' '){
+        cout << xOffset << " " << yOffset << " " << cam.getDistance() << endl;
+    }
 }
 
 //--------------------------------------------------------------
