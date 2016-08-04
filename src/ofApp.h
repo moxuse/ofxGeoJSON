@@ -27,6 +27,6 @@ private:
     ofxGeoJSON geojson;
     ofEasyCam cam;
     
-    float xOffset = -17.45, yOffset = -93.4701;
-    float distance = 0.466007;
+    double xOffset = -17.46, yOffset = -93.4901;
+    double distance = 0.0361609;
 };

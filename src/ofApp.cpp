@@ -22,7 +22,7 @@ void ofApp::setup(){
     // If it's loaded ofxGeoJSON makes ofMesh's vector array in this transcation.
     //-------------------------
     
-    if (geojson.load("oversigtskort.geo.json")) {
+    if (geojson.load("city.geojson")) {
         ofLog(OF_LOG_NOTICE, "Succeed to load geojson..");
     } else {
         ofLog(OF_LOG_NOTICE, "Failed to load geojson..");
@@ -64,12 +64,13 @@ void ofApp::draw(){
     //-------------------------
     
     
-//    vector< ofPtr<ofMesh> > japan = geojson.getFeature("WOOOHOO2");
+//    vector< ofPtr<ofMesh> > japan = geojson.getFeature("52142");
 //    
 //    for (int i = 0; i<japan.size(); i++) {
 //        int size = japan[i].get()->getNumColors();
 //        for (int j = 0; j < size; j++) {
 //            japan[i].get()->setColor(j, ofColor(255.0,0.0,0.0));
+//            japan[i].get()->draw();
 //        }
 //    };
     
@@ -79,16 +80,16 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if(key == OF_KEY_UP){
-        yOffset+=0.01;
+        yOffset+=0.001;
     }
     if(key == OF_KEY_DOWN){
-        yOffset-=0.01;
+        yOffset-=0.001;
     }
     if(key == OF_KEY_RIGHT){
-         xOffset-=0.01;
+         xOffset-=0.001;
     }
     if(key == OF_KEY_LEFT){
-        xOffset+=0.01;
+        xOffset+=0.001;
     }
     
     if(key == ' '){
